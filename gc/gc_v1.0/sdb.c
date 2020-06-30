@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "collector.h"
+#include "sdb.h"
 
 /*
  * Function:  struct_record_print
@@ -57,7 +57,7 @@ int struct_record_add(struct_database_t *database, struct_record_t *new) {
 	
 	struct_record_t *head = database->head;
 	//check to see if the struct database has a head
-	if(!head) {
+	if (!head) {
 		database->head = new;
 		new->next = NULL;
 		database->num_of_records++;
@@ -88,7 +88,7 @@ struct_record_t* struct_database_lookup(struct_database_t *database, char *name)
 	struct_record_t *struct_ptr = NULL;
 	ITERATE_STRUCT_RECORDS_BEGIN(database, struct_ptr) {
 		
-		if(!strcmp(name, struct_ptr->name))
+		if (!strcmp(name, struct_ptr->name))
 			return struct_ptr;
 		
 	} ITERATE_STRUCT_RECORDS_END;

@@ -1,5 +1,7 @@
-#ifndef HEADER_FILE
-#define HEADER_FILE
+#ifndef HEADER_FILE_SDB
+#define HEADER_FILE_SDB
+	
+	#include <assert.h>
 	
 	/* constants */
 	
@@ -59,12 +61,12 @@
 	#define RECORD_INSERT(database_name, struct_name, fields_array)					\
 		do {																		\
 			struct_record_t *record = calloc(1, sizeof(struct_record_t));			\
-			strncpy(record->struct_name, #struct_name, MAXIMUM_NAME_DESCRIPTOR);	\
+			strncpy(record->name, #struct_name, MAXIMUM_NAME_DESCRIPTOR);	\
 			record->size = sizeof(struct_name);										\
-			record->fields = sizeof(fields_array) / sizeof(struct_field_t);			\
+			record->num_of_fields = sizeof(fields_array) / sizeof(struct_field_t);			\
 			record->fields = fields_array;											\
 			if(struct_record_add(database_name, record)) {							\
-				assert(0);															\
+				assert(0);										        			\
 			}																		\
 		} while(0);
 		
@@ -82,4 +84,4 @@
 	void struct_database_print(struct_database_t *database);
 	int struct_record_add(struct_database_t *database, struct_record_t *new);
 
-#endif /* HEADER_FILE */
+#endif /* HEADER_FILE_SDB */
