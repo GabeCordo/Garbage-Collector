@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "sdb.h"
 
 /*
@@ -15,7 +12,6 @@ void struct_record_print(struct_record_t *record) {
 	
 	printf("Record (%p)", &record);
 	printf("%s\t| size = %i\t| fields = %i", record->name, record->size, record->num_of_fields);
-	
 }
 
 /*
@@ -38,7 +34,6 @@ void struct_database_print(struct_database_t *database) {
 		struct_record_print(struct_ptr);
 		
 	} ITERATE_STRUCT_RECORDS_END;
-		
 }
 
 /*
@@ -88,7 +83,7 @@ struct_record_t* struct_database_lookup(struct_database_t *database, char *name)
 	struct_record_t *struct_ptr = NULL;
 	ITERATE_STRUCT_RECORDS_BEGIN(database, struct_ptr) {
 		
-		if (!strcmp(name, struct_ptr->name))
+		if (strncmp(name, struct_ptr->name, strlen(name)) == 0)
 			return struct_ptr;
 		
 	} ITERATE_STRUCT_RECORDS_END;

@@ -1,13 +1,16 @@
 #ifndef HEADER_FILE_SDB
 #define HEADER_FILE_SDB
 	
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
 	#include <assert.h>
 	
 	/* constants */
 	
 	#define MAXIMUM_NAME_DESCRIPTOR 120
 	
-	/* type deffinitions */
+	/* type declarations */
 	
 	typedef enum types {
 		UINT8,
@@ -17,7 +20,8 @@
 		OBJ_PTR,
 		FLOAT,
 		DOUBLE,
-		OBJ_STRUCT
+		OBJ_STRUCT,
+		VOID //VOID POINTER (void *)
 	} types_t;
 	
 	typedef struct struct_field_ {
@@ -61,15 +65,20 @@
 	#define RECORD_INSERT(database_name, struct_name, fields_array)					\
 		do {																		\
 			struct_record_t *record = calloc(1, sizeof(struct_record_t));			\
-			strncpy(record->name, #struct_name, MAXIMUM_NAME_DESCRIPTOR);	\
+			strncpy(record->name, #struct_name, MAXIMUM_NAME_DESCRIPTOR);			\
 			record->size = sizeof(struct_name);										\
-			record->num_of_fields = sizeof(fields_array) / sizeof(struct_field_t);			\
+			record->num_of_fields = sizeof(fields_array) / sizeof(struct_field_t);	\
 			record->fields = fields_array;											\
 			if(struct_record_add(database_name, record)) {							\
 				assert(0);										        			\
 			}																		\
 		} while(0);
 		
+	#define MLD_SUPPORT_PRIMITIVES(struct_database_name)		\
+			RECORD_INSERT(struct_database_name, int, 0);		\
+			RECORD_INSERT(struct_database_name, float, 0);		\
+			RECORD_INSERT(struct_database_name, double, 0);
+			
 	#define ITERATE_STRUCT_RECORDS_BEGIN(struct_database, struct_ptr)					\
 	{																					\
 		for(struct_ptr = struct_database->head;											\
@@ -78,10 +87,12 @@
 	
 	#define ITERATE_STRUCT_RECORDS_END }}
 	
-	/* function deffinitions */
+	/* function declarations */
 	
 	void struct_record_print(struct_record_t *record); //needs to further expand
 	void struct_database_print(struct_database_t *database);
+	
 	int struct_record_add(struct_database_t *database, struct_record_t *new);
+	struct_record_t* struct_database_lookup(struct_database_t *database, char *name);
 
 #endif /* HEADER_FILE_SDB */
